@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Happy Princess Day 👑</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blush:#ffd9e8; --rose:#ff7eb0; --deep:#e0508a; --lav:#d9c8ff;
+    --paper:#fff7fb; --plum:#59295f; --gold:#ffc94d;
+  }
+  *{box-sizing:border-box;margin:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Quicksand',system-ui,sans-serif;font-weight:500;
+    color:var(--plum);background:linear-gradient(180deg,var(--blush) 0%,var(--paper) 45%,var(--lav) 100%);
+    background-attachment:fixed;overflow-x:hidden;line-height:1.55;
+  }
+  h1,h2{font-family:'Pacifico','Brush Script MT',cursive;font-weight:400;line-height:1.2}
+  section{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 20px;text-align:center;position:relative}
+  button{font:inherit;cursor:pointer;border:0}
+  button:focus-visible{outline:3px solid var(--plum);outline-offset:3px}
+
+  /* floating sparkles */
+  .float{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+  .float span{position:absolute;bottom:-40px;animation:rise linear infinite;opacity:.8}
+  @keyframes rise{to{transform:translateY(-115vh) rotate(40deg)}}
+  section{z-index:1}
+
+  /* hero */
+  .hero h1{font-size:clamp(2.2rem,9vw,4.2rem);color:var(--deep);text-shadow:3px 3px 0 #fff}
+  .hero p{max-width:30ch;margin:14px auto 0;font-size:1.1rem}
+  .crown-wrap{position:relative;width:min(260px,70vw);margin:10px auto 6px}
+  .crown{width:100%;display:block;cursor:pointer;transform:translateY(-40px) rotate(-12deg);transition:transform .8s cubic-bezier(.3,1.6,.5,1);filter:drop-shadow(0 8px 0 rgba(224,80,138,.25));background:none;border:0;padding:0}
+  .crown.on{transform:translateY(0) rotate(0)}
+  .crown:not(.on){animation:wiggle 1.6s ease-in-out infinite}
+  @keyframes wiggle{50%{transform:translateY(-48px) rotate(-5deg)}}
+  .hint{font-size:.95rem;opacity:.8;margin-top:6px}
+  .royal{opacity:0;max-height:0;transition:opacity .8s .3s;font-size:1.25rem;font-weight:700;color:var(--deep)}
+  .royal.on{opacity:1;max-height:120px;margin-top:10px}
+  .down{margin-top:22px;background:var(--rose);color:#fff;padding:12px 26px;border-radius:99px;font-weight:700;box-shadow:0 5px 0 var(--deep);text-decoration:none;display:none}
+  .down.on{display:inline-block}
+  .down:active{transform:translateY(3px);box-shadow:0 2px 0 var(--deep)}
+
+  /* decrees */
+  h2{font-size:clamp(1.8rem,7vw,2.8rem);color:var(--deep);margin-bottom:6px}
+  .sub{margin-bottom:24px}
+  .grid{display:grid;gap:14px;width:min(520px,100%)}
+  .card{
+    background:#fff;border-radius:28px 28px 28px 8px;padding:18px 20px;
+    border:3px dashed var(--rose);color:var(--plum);text-align:left;
+    font-weight:700;font-size:1.05rem;min-height:68px;display:flex;align-items:center;gap:12px;
+    transition:transform .25s,background .25s;
+  }
+  .card:hover{transform:rotate(-1deg)}
+  .card .em{font-size:1.7rem}
+  .card.open{background:var(--blush);border-style:solid;border-radius:8px 28px 28px 28px}
+  .card .t{flex:1}
+
+  /* photo gallery */
+  .gallery{min-height:auto}
+  .photos{display:grid;grid-template-columns:repeat(2,1fr);gap:22px 16px;width:min(560px,100%);margin-top:8px}
+  .polaroid{
+    background:#fff;padding:10px 10px 8px;border-radius:6px;
+    box-shadow:0 8px 0 rgba(224,80,138,.18),0 10px 24px rgba(89,41,95,.15);
+    transform:rotate(var(--tilt,0deg));transition:transform .3s;position:relative;
+  }
+  .polaroid:nth-child(odd){--tilt:-2.5deg}
+  .polaroid:nth-child(even){--tilt:2deg}
+  .polaroid:nth-child(3n){--tilt:-1deg}
+  .polaroid:hover{transform:rotate(0) scale(1.03);z-index:2}
+  .polaroid::before{ /* little washi tape */
+    content:"";position:absolute;top:-10px;left:50%;width:56px;height:18px;
+    transform:translateX(-50%) rotate(-3deg);background:rgba(255,126,176,.55);border-radius:3px;
+  }
+  .frame{
+    aspect-ratio:4/5;width:100%;border-radius:3px;overflow:hidden;
+    background:var(--blush);display:flex;align-items:center;justify-content:center;
+  }
+  .frame img{width:100%;height:100%;object-fit:cover;display:block}
+  .add{
+    width:100%;height:100%;background:repeating-linear-gradient(45deg,#fff0f6,#fff0f6 10px,#ffe3ee 10px,#ffe3ee 20px);
+    color:var(--deep);font-weight:700;font-size:.95rem;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:6px;border:2px dashed var(--rose);border-radius:3px;
+  }
+  .add .plus{font-size:2rem;line-height:1}
+  .cap{font-family:'Pacifico',cursive;color:var(--deep);font-size:.95rem;padding-top:8px;min-height:2.2em}
+  .photo-note{margin-top:22px;font-size:.9rem;opacity:.75;max-width:34ch}
+
+  /* ask */
+  .ask .box{background:#fff;border:3px solid var(--rose);border-radius:36px;padding:30px 22px;width:min(500px,100%);box-shadow:0 10px 0 var(--lav);position:relative}
+  .ask p{margin:10px 0 22px}
+  .row{display:flex;gap:14px;justify-content:center;align-items:center;min-height:64px;flex-wrap:wrap}
+  .yes{background:var(--rose);color:#fff;padding:14px 34px;border-radius:99px;font-weight:700;font-size:1.15rem;box-shadow:0 5px 0 var(--deep);transition:transform .2s}
+  .no{background:var(--lav);color:var(--plum);padding:12px 24px;border-radius:99px;font-weight:700;box-shadow:0 4px 0 #b49be8}
+  .yes:active{transform:translateY(3px);box-shadow:0 2px 0 var(--deep)}
+  .final{display:none;font-size:1.2rem}
+  .final b{color:var(--deep)}
+  .box.done .row,.box.done .q{display:none}
+  .box.done .final{display:block}
+  .sign{margin-top:26px;font-family:'Pacifico',cursive;color:var(--deep);font-size:1.2rem}
+
+  /* confetti */
+  .pop{position:fixed;pointer-events:none;z-index:99;font-size:1.6rem;animation:pop 1.5s ease-out forwards}
+  @keyframes pop{
+    0%{transform:translate(0,0) scale(.4);opacity:1}
+    100%{transform:translate(var(--x),var(--y)) rotate(var(--r)) scale(1.1);opacity:0}
+  }
+  @media (min-width:600px){ .photos{grid-template-columns:repeat(3,1fr)} }
+  @media (prefers-reduced-motion:reduce){
+    .float{display:none}
+    .crown:not(.on){animation:none;transform:translateY(-20px) rotate(-8deg)}
+    .pop{animation-duration:.01s}
+    .polaroid{transition:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="float" id="float" aria-hidden="true"></div>
+
+<!-- 1. Hero -->
+<section class="hero">
+  <h1>Happy Princess Day,<br><span id="her">Princess</span>!</h1>
+  <div class="crown-wrap">
+    <button class="crown" id="crown" aria-label="Put on the crown">
+      <svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+        <path d="M25 120 L15 40 L60 78 L100 22 L140 78 L185 40 L175 120 Z" fill="#ffc94d" stroke="#e8a000" stroke-width="6" stroke-linejoin="round"/>
+        <rect x="25" y="112" width="150" height="22" rx="11" fill="#ffb300" stroke="#e8a000" stroke-width="6"/>
+        <circle cx="15" cy="38" r="9" fill="#ff7eb0" stroke="#e0508a" stroke-width="4"/>
+        <circle cx="100" cy="20" r="11" fill="#ff7eb0" stroke="#e0508a" stroke-width="4"/>
+        <circle cx="185" cy="38" r="9" fill="#ff7eb0" stroke="#e0508a" stroke-width="4"/>
+        <circle cx="62" cy="123" r="6" fill="#d9c8ff"/><circle cx="100" cy="123" r="7" fill="#fff"/><circle cx="138" cy="123" r="6" fill="#d9c8ff"/>
+      </svg>
+    </button>
+  </div>
+  <p class="hint" id="hint">tap the crown 👆</p>
+  <div class="royal" id="royal">By royal decree, today belongs entirely to you. 💖</div>
+  <a href="#decrees" class="down" id="down">See your royal decrees</a>
+</section>
+
+<!-- 2. Decrees -->
+<section id="decrees">
+  <h2>Royal Decrees</h2>
+  <p class="sub">Tap each scroll to open it 💌</p>
+  <div class="grid" id="grid"></div>
+</section>
+
+<!-- 3. Photos -->
+<section class="gallery" id="photos-section">
+  <h2>Royal Portraits</h2>
+  <p class="sub">YOUR BEAUTY 📸</p>
+  <div class="photos" id="photos"></div>
+  <p class="photo-note" id="photoNote"></p>
+</section>
+
+<!-- 4. Ask -->
+<section class="ask" id="ask">
+  <div class="box" id="box">
+    <h2 class="q">One last decree...</h2>
+    <p class="q" id="question"></p>
+    <div class="row">
+      <button class="yes" id="yes">Yes! 💕</button>
+      <button class="no" id="no">No</button>
+    </div>
+    <div class="final" id="final"></div>
+  </div>
+  <div class="sign" id="other sign ">So here it is, your gift for princess day. if i be for real, you deserve all the efforts and  all of my attention. so dont say you shouldnt have to do this n all bcz i do and you deserve all of it. i know sometimes im so stupid and make you angry. but thats just my love language, to irritate you hehe. and you are so cute when you are angry. also when you smile. overall you are beautiful in every angle like just look at the pictures above how can someone be so cuteee. keep smiling madhu/neetu/isha/shree, and always be happy" 💗</div>
+  <div class="sign" id="sign"></div>
+</section>
+
+<script>
+/* ✏️ EDIT THESE ✏️ */
+const HER_NAME = "Madhu";        // her name or nickname
+const MY_NAME  = "Nayan";       // your name (shown at the bottom)
+const DATE_IDEA = "a royal date with me";  // e.g. "ice cream and a sunset walk"
+const DECREES = [
+  { em:"✨", text:"Your smile is honestly the best part of my day." },
+  { em:"😂", text:"You make me laugh without even trying." },
+  { em:"🌸", text:"You're kind, and people can feel it." },
+  { em:"👑", text:"You act like a queen and you deserve to be treated like one." },
+  { em:"💭", text:"I think about our conversations way more than I admit." }
+];
+
+/* 📸 PHOTOS 📸
+   Put your pictures in the same folder as this file and list them here,
+   e.g. { src:"photos/us1.jpg", caption:"Our first coffee ☕" }
+   Any empty frames below show a "tap to add photo" button. */
+const PHOTOS = [
+   { src:"photos1.jpg", caption:"You" },
+   { src:"photos2.jpg", caption:"Cutie" },
+   { src:"photos3.jpg", caption:"I will die." },
+   { src:"photos4.jpg", caption:"Are you sure you arent a goddess?" },
+   { src:"photos5.jpg", caption:"You again" },
+   { src:"photos6.jpg", caption:"Im dead by your beauty." },
+];
+const PHOTO_SLOTS = 6;   // how many frames to show in total
+/* ---------------- */
+
+const $ = id => document.getElementById(id);
+$('her').textContent = HER_NAME;
+$('sign').textContent = "with love, " + MY_NAME + " 💗";
+$('question').textContent = "Will you let me take you on " + DATE_IDEA + "?";
+
+// floating sparkles
+(function(){
+  const bits = ['💖','✨','🌸','💗','⭐','🎀'], f = $('float');
+  for(let i=0;i<16;i++){
+    const s = document.createElement('span');
+    s.textContent = bits[i % bits.length];
+    s.style.left = Math.random()*100 + '%';
+    s.style.fontSize = (14 + Math.random()*20) + 'px';
+    s.style.animationDuration = (12 + Math.random()*14) + 's';
+    s.style.animationDelay = (-Math.random()*20) + 's';
+    f.appendChild(s);
+  }
+})();
+
+// confetti burst
+function burst(x, y, n = 22){
+  const bits = ['💖','✨','🌸','💗','👑','🎀','⭐'];
+  for(let i=0;i<n;i++){
+    const p = document.createElement('span');
+    p.className = 'pop';
+    p.textContent = bits[Math.floor(Math.random()*bits.length)];
+    const a = Math.random()*Math.PI*2, d = 90 + Math.random()*170;
+    p.style.left = x + 'px'; p.style.top = y + 'px';
+    p.style.setProperty('--x', Math.cos(a)*d + 'px');
+    p.style.setProperty('--y', Math.sin(a)*d - 40 + 'px');
+    p.style.setProperty('--r', (Math.random()*360 - 180) + 'deg');
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 1600);
+  }
+}
+
+// crown
+$('crown').addEventListener('click', e => {
+  const c = $('crown');
+  if(c.classList.contains('on')) return burst(e.clientX, e.clientY, 10);
+  c.classList.add('on');
+  $('hint').style.display = 'none';
+  $('royal').classList.add('on');
+  $('down').classList.add('on');
+  const r = c.getBoundingClientRect();
+  setTimeout(() => burst(r.left + r.width/2, r.top + r.height/2, 34), 500);
+});
+
+// decrees
+const grid = $('grid');
+DECREES.forEach(d => {
+  const b = document.createElement('button');
+  b.className = 'card';
+  b.setAttribute('aria-expanded','false');
+  b.innerHTML = '<span class="em">💌</span><span class="t">Open decree</span>';
+  b.addEventListener('click', e => {
+    if(b.classList.contains('open')) return;
+    b.classList.add('open');
+    b.setAttribute('aria-expanded','true');
+    b.querySelector('.em').textContent = d.em;
+    b.querySelector('.t').textContent = d.text;
+    burst(e.clientX, e.clientY, 8);
+  });
+  grid.appendChild(b);
+});
+
+// photo gallery
+(function(){
+  const wrap = $('photos');
+  const picker = document.createElement('input');
+  picker.type = 'file'; picker.accept = 'image/*'; picker.hidden = true;
+  document.body.appendChild(picker);
+  let target = null;
+
+  function showImage(frame, src, alt){
+    frame.innerHTML = '';
+    const img = document.createElement('img');
+    img.src = src; img.alt = alt || 'A photo of us'; img.loading = 'lazy';
+    frame.appendChild(img);
+  }
+
+  const total = Math.max(PHOTO_SLOTS, PHOTOS.length);
+  for(let i=0;i<total;i++){
+    const p = PHOTOS[i];
+    const fig = document.createElement('figure');
+    fig.className = 'polaroid';
+    const frame = document.createElement('div');
+    frame.className = 'frame';
+    const cap = document.createElement('figcaption');
+    cap.className = 'cap';
+    if(p){
+      showImage(frame, p.src, p.caption);
+      cap.textContent = p.caption || '';
+    } else {
+      const add = document.createElement('button');
+      add.className = 'add';
+      add.type = 'button';
+      add.innerHTML = '<span class="plus">＋</span><span>tap to add a photo</span>';
+      add.addEventListener('click', () => { target = {frame, cap}; picker.value = ''; picker.click(); });
+      frame.appendChild(add);
+    }
+    fig.append(frame, cap);
+    wrap.appendChild(fig);
+  }
+
+  picker.addEventListener('change', () => {
+    const f = picker.files && picker.files[0];
+    if(!f || !target) return;
+    const url = URL.createObjectURL(f);
+    showImage(target.frame, url, 'A photo of us');
+    target.cap.textContent = '💖';
+    const r = target.frame.getBoundingClientRect();
+    burst(r.left + r.width/2, r.top + r.height/2, 12);
+    target = null;
+  });
+
+  if(PHOTOS.length < total){
+    $('photoNote').textContent = "Tip: photos added by tapping only show on this device until you refresh. To keep them, list them in PHOTOS in the code.";
+  }
+})();
+
+// the ask: the "No" button is shy and keeps hopping away
+const no = $('no'), yes = $('yes');
+const noLines = ["No", "Are you sure?", "Really?", "Pretty please?", "Think again 🥺", "Nope can't catch me"];
+let tries = 0;
+function dodge(e){
+  if(e) e.preventDefault();
+  tries++;
+  no.textContent = noLines[Math.min(tries, noLines.length-1)];
+  yes.style.transform = 'scale(' + Math.min(1 + tries*0.12, 1.7) + ')';
+  no.style.position = 'fixed';
+  const w = no.offsetWidth, h = no.offsetHeight;
+  no.style.left = Math.max(10, Math.random()*(innerWidth - w - 20)) + 'px';
+  no.style.top  = Math.max(10, Math.random()*(innerHeight - h - 20)) + 'px';
+}
+no.addEventListener('mouseenter', dodge);
+no.addEventListener('touchstart', dodge, {passive:false});
+no.addEventListener('click', dodge);
+
+yes.addEventListener('click', e => {
+  $('box').classList.add('done');
+  no.style.display = 'none';
+  $('final').innerHTML = "<h2>Yay!! 🎉</h2><p style='margin-top:12px'>Best decree ever, <b>" + HER_NAME + "</b>. I'll plan something special for my princess. 👑💖</p>";
+  burst(innerWidth/2, innerHeight/2, 60);
+  setTimeout(() => burst(innerWidth/3, innerHeight/2, 30), 400);
+  setTimeout(() => burst(innerWidth*2/3, innerHeight/2, 30), 700);
+});
+</script>
+</body>
+</html>
